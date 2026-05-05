@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Для тебя 🎁</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* старт */
+#start {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* кнопка */
+button {
+  padding: 15px 30px;
+  font-size: 20px;
+  border: none;
+  border-radius: 12px;
+  background: red;
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* загрузка */
+#loading {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* основной экран */
+#content {
+  display: none;
+  margin-top: 15%;
+  opacity: 0;
+  transition: 1s;
+}
+
+/* фото */
+#photo {
+  display: none;
+  margin-top: 20px;
+  width: 200px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px red;
+  opacity: 0;
+  transition: 1s;
+}
+
+/* финал */
+#final {
+  display: none;
+  margin-top: 25%;
+  font-size: 24px;
+}
+
+/* сердечки */
+.heart {
+  position: absolute;
+  animation: float 5s linear infinite;
+}
+
+@keyframes float {
+  0% {transform: translateY(100vh);}
+  100% {transform: translateY(-10vh);}
+}
+</style>
+
+</head>
+<body>
+
+<div id="start">
+  <h2>Перед тем как начать…</h2>
+  <p>Включи звук и будь одна 😉</p>
+  <button onclick="start()">Нажми 🎁</button>
+</div>
+
+<div id="loading">
+  <h2>Подготовка сюрприза...</h2>
+  <p id="percent">0%</p>
+</div>
+
+<div id="content">
+  <h1>С днём рождения, Мика 🎉</h1>
+  <p id="text"></p>
+  <img id="photo" src="PASTE_PHOTO_LINK_HERE">
+</div>
+
+<div id="final">
+  <p>Я правда хочу, чтобы это было не только здесь… ❤️</p>
+</div>
+
+<audio id="music" loop>
+  <source src="PASTE_YOUR_MP3_LINK_HERE" type="audio/mpeg">
+</audio>
+
+<script>
+function start() {
+  document.getElementById("start").style.display = "none";
+  document.getElementById("loading").style.display = "flex";
+
+  let music = document.getElementById("music");
+  music.volume = 0.5;
+  music.play();
+
+  load();
+}
+
+function load() {
+  let p = 0;
+  let interval = setInterval(() => {
+    p++;
+    document.getElementById("percent").innerText = p + "%";
+
+    if (p >= 100) {
+      clearInterval(interval);
+      document.getElementById("loading").style.display = "none";
+
+      let content = document.getElementById("content");
+      content.style.display = "block";
+      setTimeout(() => content.style.opacity = "1", 100);
+
+      typing();
+      hearts();
+
+      // появление фото через 3 секунды
+      setTimeout(() => {
+        let photo = document.getElementById("photo");
+        photo.style.display = "block";
+        setTimeout(() => photo.style.opacity = "1", 100);
+      }, 3000);
+
+      // финальный экран
+      setTimeout(() => {
+        document.getElementById("content").style.display = "none";
+        document.getElementById("final").style.display = "block";
+      }, 10000);
+    }
+  }, 30);
+}
+
+let message = "Мика, поздравляю тебя с днём рождения 🎉 Желаю тебе счастья, здоровья и чтобы ты как можно меньше плакала. Пусть у тебя всё получится. Я правда рад, что встретил тебя, даже в TikTok… и хочу, чтобы у нас получилось и в жизни ❤️";
+
+let i = 0;
+
+function typing() {
+  if (i < message.length) {
+    document.getElementById("text").innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typing, 45);
+  }
+}
+
+function hearts() {
+  setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+  }, 250);
+}
+</script>
+
+</body>
+</html>            
